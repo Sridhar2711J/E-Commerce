@@ -1,0 +1,9 @@
+body{
+  background-color: #fffdfd;
+  font-family: apple-system, "Helvetica Neue", sans-serif, "Mier Book";
+}
+
+.nav{
+  display: flex;
+  border: 2px solid;
+}
