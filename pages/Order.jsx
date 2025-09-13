@@ -1,39 +1,37 @@
 import React from 'react'
 
 function Order({orders}) {
+  console.log(orders);
+
+   
   return (
-    <section className="mt-6">
-        <h2 className="text-xl font-semibold mb-2">📦 Orders</h2>
-        <table className="w-full border-collapse border border-gray-300 text-sm">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">Order ID</th>
-              <th className="border p-2">Date</th>
-              <th className="border p-2">Status</th>
-              <th className="border p-2">Total</th>
-              <th className="border p-2">Actions</th>
+    <div className="bg-white p-6 shadow-lg rounded-2xl mb-10">
+      <h2 className="text-2xl font-bold mb-4 text-[#802c6e]">Order History</h2>
+      <table className="w-full border-collapse">
+        <thead>
+          <tr className="border-b">
+            <th className="text-left p-2">Order ID</th>
+            <th className="text-left p-2">Product Image</th>
+            <th className="text-left p-2">Product Name</th>
+            <th className="text-center p-2">Quantity</th>
+            <th className="text-right p-2">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders.map((order, index) => (
+            <tr key={index} className="border-b">
+              <td className="p-2">{order.id}</td>
+              <td className="p-2 flex ml-10">
+                <img className='w-5' src={order.image} alt="" />
+              </td>
+              <td className=" p-2">{order.title}</td>
+              <td className="text-center p-2">{order.quantity}</td>
+              <td className="text-right p-2">${(order.price)*(order.quantity)}</td>
             </tr>
-          </thead>
-          <tbody>
-            {orders.map((item) => (
-              <tr key={item.id}>
-                <td className="border p-2">{item.id}</td>
-                <td className="border p-2">{item.date}</td>
-                <td className="border p-2">{item.status}</td>
-                <td className="border p-2">₹{item.total}</td>
-                <td className="border p-2">
-                  <button
-                    className="text-blue-600"
-                    onClick={() => setSelectedOrder(item)}
-                  >
-                    View Invoice
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+          ))}
+        </tbody>
+      </table>
+    </div>
   )
 }
 

@@ -8,7 +8,7 @@ import WishList from "../pages/WishList";
 // import SignUpPage from "../pages/SignUpPage";
 import SearchBar from '../components/SearchBar'
 import FilterBar from "../components/FilterBar";
-import Cart from "../components/Cart";
+import Cart from "../pages/Cart";
 import './App.css'
 import MyAccount from "../components/MyAccount";
 import MyDashboard from "../pages/MyDashboard";
@@ -22,9 +22,7 @@ function App() {
     const [categoryBar,setCategoryBar] = useState(true);
 
     const [user, setUser] = useState(null);
-      console.log(user);
-      
-
+    
     const CategoryBar = () =>{
       setCategoryBar(!categoryBar)
     }
@@ -33,7 +31,6 @@ function App() {
     const [selectedCategory, setSelectedCategory] = useState("All");
 
     const [cart, setCart] = useState([]);
-    const [isCartOpen, setIsCartOpen] = useState(false);
     const [isMyAccount,setIsMyAccount] = useState(false);
 
       // Add to cart
@@ -49,7 +46,6 @@ function App() {
         }
         return [...prev, { ...product, quantity: 1 }];
       });
-      setIsCartOpen(true);
     };
 
     // Remove from cart
@@ -85,6 +81,13 @@ function App() {
   };
 
   const [orders, setOrders] = useState([]);
+
+  // ✅ Add to Order
+
+  const addOrder = (item) => {
+    const updated = [...orders, item];
+    setOrders(updated)
+  }
 
       useEffect(()=>{
          const fetchProducts = async() =>{
@@ -143,10 +146,14 @@ function App() {
            <h3 className='text-[16px] text-zinc-800'>Category</h3>
         </div>
           
-        <div className="cart flex flex-col items-center cursor-pointer" onClick={()=>setIsCartOpen(!isCartOpen)}>
+        
+        <div className="cart flex flex-col items-center cursor-pointer">
+          <Link to={"/cart"}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg>
           <h3 className='text-[16px] text-zinc-800' onClick={()=>setIsMyAccount(false)}>Cart({cart.reduce((sum, item) => sum + item.quantity, 0)})</h3>
+          </Link>
         </div>
+      
          
         <div className="flex flex-col items-center cursor-pointer">
           {!user ? (
@@ -155,7 +162,7 @@ function App() {
               <h3 className="text-[16px] text-zinc-800">Login</h3>
             </Link>
           ) : (
-            <div onClick={()=>{setIsMyAccount(!isMyAccount);setIsCartOpen(false);
+            <div onClick={()=>{setIsMyAccount(!isMyAccount);;
             }} className="flex flex-col items-center">
               <img
                 src={user?.picture || "/default-avatar.png"}
@@ -183,11 +190,12 @@ function App() {
         <Route path="/login" element= {<LoginPage onLogin={setUser}/> } />
         
         {/* My DashBoard */}
-        <Route path="/account/*" element={<MyDashboard  wishlist={wishlist} user={user} removeFromWishlist={removeFromWishlist} orders={orders} setOrders={setOrders}/>} />
-
+        <Route path="/account/*" element={<MyDashboard  wishlist={wishlist} user={user} removeFromWishlist={removeFromWishlist} orders={orders} setOrders={setOrders} cart={cart}/>} />
+          
+        {/* {Cart} */}
+        <Route path="/cart" element={<Cart cart={cart} removeFromCart={removeFromCart} updateQuantity={updateQuantity} setIsMyAccount={setIsMyAccount} addOrder={addOrder}/> }/>
       </Routes>
 
-      <Cart cart={cart} isCartOpen={isCartOpen} setIsCartOpen={setIsCartOpen} removeFromCart={removeFromCart} updateQuantity={updateQuantity} setIsMyAccount={setIsMyAccount} />
       <MyAccount isMyAccount={isMyAccount} setIsMyAccount={setIsMyAccount} user={user}/>
  
     </div>

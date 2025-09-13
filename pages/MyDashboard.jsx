@@ -5,7 +5,7 @@ import WishList from './WishList';
 import Order from './Order';
 
 
-function MyDashboard({ user,wishlist,removeFromWishlist,orders,setOrders}) {
+function MyDashboard({ user,wishlist,removeFromWishlist,orders,setOrders,cart}) {
   const defaultPicture = '/picture.webp';
       console.log(user);
       
@@ -19,11 +19,11 @@ function MyDashboard({ user,wishlist,removeFromWishlist,orders,setOrders}) {
           alt="user"
           className='rounded-full w-30'
         />
-        <h2 className='text-2xl'>
+        <h2 className='text-2xl text-center'>
           Welcome, {!user ? "Guest" : user.name}!
         </h2>
 
-        <Link to="/account/mydashboard">
+        <Link to="/account/dashboard">
           <h2 className="font-[600] text-[20px] bg-gray-200 w-50 text-center py-1 rounded-[5px] cursor-pointer text-black hover:bg-[rgb(159,32,137)] hover:text-white">
             Dashbord
           </h2>
@@ -43,9 +43,9 @@ function MyDashboard({ user,wishlist,removeFromWishlist,orders,setOrders}) {
       </div>
 
       {/* Main Content */}
-      <div className='w-[80%] p-5'>
+      <div className='w-[80%] p-5 pb-140'>
         <Routes>
-          <Route path="mydashboard" element={<Dash />} />
+          <Route path="dashboard" element={<Dash cart={cart}  wishlist={wishlist} orders={orders}/>} />
           <Route path="wishlist" element={<WishList  wishlist={wishlist} removeFromWishlist={removeFromWishlist}/>} />
           <Route path="order" element={<Order  orders={orders} setOrders={setOrders} />} />
         </Routes>
